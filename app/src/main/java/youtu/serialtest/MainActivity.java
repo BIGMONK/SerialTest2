@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements SerialManager.Ser
     protected void onDestroy() {
         super.onDestroy();
         if (mSerialManager != null) {
-            mSerialManager.openSerial();
+            mSerialManager.closeSerial();
         }
     }
 

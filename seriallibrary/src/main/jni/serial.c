@@ -27,7 +27,7 @@ jc,
 jint num
 ){
 LOGI("Serial_OpenSerial");
-Serial_fd = open("/dev/ttyS3", O_RDWR | O_NOCTTY | O_NONBLOCK);
+Serial_fd = open("/dev/ttyS1", O_RDWR | O_NOCTTY | O_NONBLOCK);
 LOGI("fd = %d\n", Serial_fd);
 if (Serial_fd == -1) {
 return -1;

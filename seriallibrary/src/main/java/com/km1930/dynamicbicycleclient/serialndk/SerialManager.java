@@ -56,7 +56,8 @@ public class SerialManager {
         mSerialAngleChangeListener = serialAngleChangeListener;
     }
 
-    public void setSerialDistanceChangeListener(SerialDistanceChangeListener serialDistanceChangeListener) {
+    public void setSerialDistanceChangeListener(SerialDistanceChangeListener
+                                                        serialDistanceChangeListener) {
         mSerialDistanceChangeListener = serialDistanceChangeListener;
     }
 
@@ -117,21 +118,30 @@ public class SerialManager {
         Serial.SetSerialBaud(baud);
     }
 
+    private int noDataTimes = 0;
+
     public void readSerial() {
-
         mShorts = new short[9];
-
         serialBuf = 0;
         try {
             serialBuf = Serial.ReadSerialBuf(mShorts, 9);
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
-//        LogUtils.d(TAG, "serialBuf:" + serialBuf);
+        Log.d(TAG, "serialBuf:" + serialBuf);
 
         if (serialBuf == 9) {
             if (mShorts[0] == 0x55 && mShorts[1] == 0x01 && mShorts[8] == 0xAA) {
                 parseSerialData(mShorts);
+            }
+            noDataTimes = 0;
+        } else if (serialBuf == 0) {
+            if (noDataTimes > 3) {
+                mShorts[2] = 0;
+                parseSerialData(mShorts);
+                noDataTimes=0;
+            } else {
+                noDataTimes++;
             }
         }
     }
