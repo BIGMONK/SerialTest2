@@ -128,7 +128,12 @@ public class SerialManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "serialBuf:" + serialBuf);
+
+        StringBuilder sb = new StringBuilder();
+        for (short i : mShorts) {
+            sb.append(mShorts[i]+"    ");
+        }
+        Log.d(TAG, "serialBuf:" + serialBuf+"   values="+sb.toString());
 
         if (serialBuf == 9) {
             if (mShorts[0] == 0x55 && mShorts[1] == 0x01 && mShorts[8] == 0xAA) {
@@ -139,7 +144,7 @@ public class SerialManager {
             if (noDataTimes > 3) {
                 mShorts[2] = 0;
                 parseSerialData(mShorts);
-                noDataTimes=0;
+                noDataTimes = 0;
             } else {
                 noDataTimes++;
             }
